@@ -1,0 +1,7 @@
+python-telegram-bot==20.3
+openai
+google-api-python-client
+python-dotenv
+pydub
+SpeechRecognition
+ffmpeg-python
