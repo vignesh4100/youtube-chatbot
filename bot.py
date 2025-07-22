@@ -3,6 +3,7 @@ import logging
 import asyncio
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, ContextTypes, filters
+from telegram.helpers import escape_markdown
 from pytube import Search
 from googleapiclient.discovery import build
 from pydub import AudioSegment
@@ -52,7 +53,13 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
         video_id = best["id"]["videoId"]
         title = best["snippet"]["title"]
         url = f"https://www.youtube.com/watch?v={video_id}"
-        await update.message.reply_text(f"✅ Best match: *{title}*\n{url}", parse_mode="Markdown")
+        escaped_title = escape_markdown(title, version=2)
+        escaped_url = escape_markdown(url, version=2)
+
+        await update.message.reply_text(
+            f"✅ Best match: *{escaped_title}*\n{escaped_url}",
+            parse_mode="MarkdownV2"
+        )
     else:
         await update.message.reply_text("😢 Sorry, I couldn't find anything.")
 
